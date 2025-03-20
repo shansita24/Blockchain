@@ -1,0 +1,91 @@
+# Ignore target directory (compiled Java files)
+target/
+
+# Ignore IntelliJ and VS Code project files
+.idea/
+.vscode/
+
+# Ignore Eclipse project files
+*.classpath
+*.project
+*.settings/
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore Logs and temporary files
+logs/
+*.log
+hs_err_pid*
+
+# Ignore Maven / Gradle specific files
+.mvn/
+!mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+pom.xml.bak
+pom.xml.*.bak
+target/
+build/
+
+# Ignore compiled class files
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore Web3-related files
+node_modules/
+dist/
+truffle-config.js.local
+.truffle/
+
+# Ignore environment and config files (security reasons)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+application.properties
+application.yml
+config/
+
+# Ignore database files (if using local SQLite)
+*.db
+*.sqlite
+
+# Ignore Solidity artifacts and compiled contracts
+smart-contracts/build/
+smart-contracts/node_modules/
+smart-contracts/contracts/*.json
+
+# Ignore test coverage reports
+coverage/
+.nyc_output/
+
+# Ignore generated API docs
+docs/
+
+# Ignore deployment keys (for security)
+*.pem
+*.key
+*.crt
+*.p12
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# Ignore JetBrains IDE specific files
+*.iml
+out/
+
+# Ignore Python Virtual Environments (if used for scripts)
+venv/
+__pycache__/
