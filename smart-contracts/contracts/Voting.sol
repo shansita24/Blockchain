@@ -1,57 +1,39 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 contract Voting {
     struct Candidate {
-        uint id;
         string name;
         uint voteCount;
     }
 
     mapping(uint => Candidate) public candidates;
-    mapping(address => bool) public voters;
+    mapping(address => bool) public hasVoted;
     uint public candidatesCount;
 
-    event CandidateAdded(uint id, string name);
-    event Voted(address voter, uint candidateId);
-    event ContractDeployed(address deployer);  // Debugging Event
+    event Voted(uint candidateId, address voter);
 
     constructor() {
-        emit ContractDeployed(msg.sender); 
+        addCandidate("Alice");
+        addCandidate("Bob");
     }
 
     function addCandidate(string memory _name) public {
-        require(bytes(_name).length > 0, "Candidate name cannot be empty");
+        candidates[candidatesCount] = Candidate(_name, 0);
         candidatesCount++;
-        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
-        emit CandidateAdded(candidatesCount, _name);
     }
-
 
     function vote(uint _candidateId) public {
-        require(!voters[msg.sender], "You have already voted!");
-        require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID!");
+        require(!hasVoted[msg.sender], "You have already voted");
+        require(_candidateId < candidatesCount, "Invalid candidate");
 
         candidates[_candidateId].voteCount++;
-        voters[msg.sender] = true;
+        hasVoted[msg.sender] = true;
 
-        emit Voted(msg.sender, _candidateId);
+        emit Voted(_candidateId, msg.sender);
     }
 
-    function getVoteCount(uint _candidateId) public view returns (uint) {
-        require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID!");
-        return candidates[_candidateId].voteCount;
-    }
-
-    function getAllCandidates() public view returns (Candidate[] memory) {
-        Candidate[] memory allCandidates = new Candidate[](candidatesCount);
-        uint index = 0;
-        for (uint i = 1; i <= candidatesCount; i++) {
-            if (bytes(candidates[i].name).length > 0) {  // Ensure candidate exists
-                allCandidates[index] = candidates[i];
-                index++;
-            }
-        }
-        return allCandidates;
+    function getCandidate(uint _candidateId) public view returns (string memory, uint) {
+        return (candidates[_candidateId].name, candidates[_candidateId].voteCount);
     }
 }

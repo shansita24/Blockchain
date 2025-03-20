@@ -1,12 +1,11 @@
 package com.example.backend.contracts;
 
-import io.reactivex.Flowable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
+
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
@@ -29,6 +28,8 @@ import org.web3j.tuples.generated.Tuple2;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
+
+import io.reactivex.Flowable;
 
 /**
  * <p>Auto generated code.
@@ -85,7 +86,7 @@ public class Voting extends Contract {
 
     public static List<VotedEventResponse> getVotedEvents(TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(VOTED_EVENT, transactionReceipt);
-        ArrayList<VotedEventResponse> responses = new ArrayList<VotedEventResponse>(valueList.size());
+        ArrayList<VotedEventResponse> responses = new ArrayList<>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             VotedEventResponse typedResponse = new VotedEventResponse();
             typedResponse.log = eventValues.getLog();
@@ -120,16 +121,12 @@ public class Voting extends Contract {
         final Function function = new Function(FUNC_CANDIDATES, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
-        return new RemoteFunctionCall<Tuple2<String, BigInteger>>(function,
-                new Callable<Tuple2<String, BigInteger>>() {
-                    @Override
-                    public Tuple2<String, BigInteger> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple2<String, BigInteger>(
-                                (String) results.get(0).getValue(), 
-                                (BigInteger) results.get(1).getValue());
-                    }
-                });
+        return new RemoteFunctionCall<>(function, () -> {
+            List<Type> results = executeCallMultipleValueReturn(function);
+            return new Tuple2<>(
+                    (String) results.get(0).getValue(),
+                    (BigInteger) results.get(1).getValue());
+        });
     }
 
     public RemoteFunctionCall<BigInteger> candidatesCount() {
@@ -166,16 +163,12 @@ public class Voting extends Contract {
         final Function function = new Function(FUNC_GETCANDIDATE, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_candidateId)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
-        return new RemoteFunctionCall<Tuple2<String, BigInteger>>(function,
-                new Callable<Tuple2<String, BigInteger>>() {
-                    @Override
-                    public Tuple2<String, BigInteger> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple2<String, BigInteger>(
-                                (String) results.get(0).getValue(), 
-                                (BigInteger) results.get(1).getValue());
-                    }
-                });
+        return new RemoteFunctionCall<>(function, () -> {
+            List<Type> results = executeCallMultipleValueReturn(function);
+            return new Tuple2<String, BigInteger>(
+                    (String) results.get(0).getValue(),
+                    (BigInteger) results.get(1).getValue());
+        });
     }
 
     @Deprecated
