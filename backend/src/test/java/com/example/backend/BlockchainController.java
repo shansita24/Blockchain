@@ -23,12 +23,21 @@ public class BlockchainController {
     }
 
     @PostMapping("/vote/{id}")
-    public String vote(@PathVariable int id) throws Exception {
-        return blockchainVotingService.voteForCandidate(BigInteger.valueOf(id));
+    public String vote(@PathVariable int id) {
+        try {
+            return blockchainVotingService.voteForCandidate(BigInteger.valueOf(id));
+        } catch (Exception e) {
+            return "Error while voting: " + e.getMessage();
+        }
     }
 
     @GetMapping("/votes/{id}")
-    public BigInteger getVotes(@PathVariable int id) throws Exception {
-        return blockchainVotingService.getVoteCount(BigInteger.valueOf(id));
+    public BigInteger getVotes(@PathVariable int id) {
+        try {
+            return blockchainVotingService.getVoteCount(BigInteger.valueOf(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BigInteger.valueOf(-1); // Indicates an error
+        }
     }
 }
